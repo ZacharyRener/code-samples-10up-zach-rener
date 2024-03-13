@@ -18,7 +18,5 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'CODE_SAMPLES_10UP_ZACH_RENER_VERSION', '1.0.0' );
-
 register_block_type( __DIR__ . '/build/header' );
 register_block_type( __DIR__ . '/build/post-grid' );

@@ -10,7 +10,7 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ edit)
+/* harmony export */   "default": () => (/* binding */ Edit)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -26,33 +26,45 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function edit(props) {
-  const {
-    attributes,
-    setAttributes
-  } = props;
+
+/**
+ * Edit component for the custom Gutenberg block.
+ *
+ * This component allows users to edit the block's attributes, including
+ * the main content, whether to show shadow text, and custom shadow text options.
+ *
+ */
+function Edit({
+  attributes,
+  setAttributes
+}) {
+  // Determine the shadow text based on block attributes
   const shadowText = attributes.overrideShadowText ? attributes.customShadowText : attributes.content;
+
+  // Inspector controls for block settings
   const inspectorControls = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Settings", "")
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Settings", "text-domain")
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
     checked: !!attributes.showShadowText,
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Show shadow text"),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Show shadow text", "text-domain"),
     onChange: () => setAttributes({
       showShadowText: !attributes.showShadowText
     })
   }), attributes.showShadowText && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
     checked: !!attributes.overrideShadowText,
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Override shadow text"),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Override shadow text", "text-domain"),
     onChange: () => setAttributes({
       overrideShadowText: !attributes.overrideShadowText
     })
   }), attributes.showShadowText && attributes.overrideShadowText && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Custom shadow text"),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Custom shadow text", "text-domain"),
     value: attributes.customShadowText || "",
-    onChange: value => setAttributes({
-      customShadowText: value
+    onChange: customShadowText => setAttributes({
+      customShadowText
     })
   })));
+
+  // Render the edit UI
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, inspectorControls, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)()
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
@@ -61,8 +73,8 @@ function edit(props) {
     tagName: "h2",
     value: attributes.content,
     allowedFormats: [],
-    onChange: newContent => setAttributes({
-      content: newContent
+    onChange: content => setAttributes({
+      content
     }),
     placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Enter header...", "text-domain")
   }), attributes.showShadowText && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
@@ -105,7 +117,7 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ save)
+/* harmony export */   "default": () => (/* binding */ Save)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -113,13 +125,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
 
 
-function save(props) {
-  const shadowText = props.attributes.overrideShadowText ? props.attributes.customShadowText : props.attributes.content;
+
+/**
+ * Save function for the custom Gutenberg block.
+ *
+ * Outputs the static content for the block based on the attributes set in the editor.
+ * This content is what is stored in the post content and displayed on the front end.
+ *
+ */
+function Save({
+  attributes
+}) {
+  // Determine the shadow text based on block attributes
+  const {
+    content,
+    showShadowText,
+    overrideShadowText,
+    customShadowText
+  } = attributes;
+  const shadowText = overrideShadowText ? customShadowText : content;
+
+  // Render the block's static content
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
     ..._wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps.save()
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "textWrapper"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, props.attributes.content), props.attributes.showShadowText && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, content), showShadowText && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "shadow-text"
   }, shadowText)));
 }

@@ -30,33 +30,79 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const EditComponent = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.withSelect)((select, props) => {
-  const {
-    attributes: {
-      postCount,
-      postType
-    }
-  } = props;
-  const {
-    getEntityRecords
-  } = select("core");
-  const latestPosts = getEntityRecords("postType", postType, {
-    per_page: postCount
-  });
-  return {
-    posts: latestPosts
+
+/**
+ * Utility function to format date strings.
+ */
+function formatDate(dateString) {
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
   };
-})(props => {
+  return new Date(dateString).toLocaleDateString("en-US", options).toUpperCase();
+}
+
+/**
+ * Component to render each post item.
+ */
+function PostItem({
+  post
+}) {
+  const [featuredImageUrl, setFeaturedImageUrl] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    // Fetches the featured image URL asynchronously via REST api
+    const fetchImage = async () => {
+      if (post.featured_media) {
+        const response = await fetch(`${window.location.origin}/wp-json/wp/v2/media/${post.featured_media}`);
+        const data = await response.json();
+        setFeaturedImageUrl(data.source_url);
+      }
+    };
+    fetchImage();
+  }, [post.featured_media]);
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "post"
+  }, featuredImageUrl && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    src: featuredImageUrl,
+    alt: post.title.rendered
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "date"
+  }, formatDate(post.date)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, post.title.rendered), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "excerpt",
+    dangerouslySetInnerHTML: {
+      __html: post.excerpt.rendered
+    }
+  }));
+}
+
+/**
+ * Main EditComponent using functional components and hooks.
+ */
+function EditComponent({
+  attributes,
+  setAttributes
+}) {
   const {
-    attributes,
-    setAttributes,
-    posts
-  } = props;
+    postCount,
+    postType,
+    title
+  } = attributes;
+
+  // Fetch posts using useSelect hook.
+  const posts = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useSelect)(select => {
+    const {
+      getEntityRecords
+    } = select("core");
+    return getEntityRecords("postType", postType, {
+      per_page: postCount
+    });
+  }, [postCount, postType]);
   const inspectorControls = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Post Grid Settings", "post-grid")
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RangeControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Number of posts", "post-grid"),
-    value: attributes.postCount,
+    value: postCount,
     onChange: value => setAttributes({
       postCount: value
     }),
@@ -64,7 +110,7 @@ const EditComponent = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.withSelect
     max: 4
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Select Post Type", "post-grid"),
-    value: attributes.postType,
+    value: postType,
     onChange: value => setAttributes({
       postType: value
     }),
@@ -74,47 +120,8 @@ const EditComponent = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.withSelect
     }, {
       label: "Page",
       value: "page"
-    }
-    // Add more post types as needed
-    ]
+    }]
   })));
-  function formatDate(dateString) {
-    const options = {
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options).toUpperCase();
-  }
-  function PostItem({
-    post
-  }) {
-    const [featuredImageUrl, setFeaturedImageUrl] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
-    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-      const fetchImage = async () => {
-        if (post.featured_media) {
-          const response = await fetch(`${window.location.origin}/wp-json/wp/v2/media/${post.featured_media}`);
-          const data = await response.json();
-          setFeaturedImageUrl(data.source_url);
-        }
-      };
-      fetchImage();
-    }, [post.featured_media]);
-    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      key: post.id,
-      className: "post"
-    }, featuredImageUrl && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
-      src: featuredImageUrl,
-      alt: post.title.rendered
-    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "date"
-    }, formatDate(post.date)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, post.title.rendered), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "excerpt",
-      dangerouslySetInnerHTML: {
-        __html: post.excerpt.rendered
-      }
-    }));
-  }
   const postList = posts && posts.map(post => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(PostItem, {
     key: post.id,
     post: post
@@ -122,10 +129,10 @@ const EditComponent = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.withSelect
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, inspectorControls, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)()
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "title"
+    className: "title"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText, {
     tagName: "h3",
-    value: attributes.title,
+    value: title,
     allowedFormats: [],
     onChange: newTitle => setAttributes({
       title: newTitle
@@ -134,7 +141,7 @@ const EditComponent = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.withSelect
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "posts"
   }, postList)));
-});
+}
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EditComponent);
 
 /***/ }),

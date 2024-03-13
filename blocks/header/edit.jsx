@@ -7,19 +7,26 @@ import {
 import { PanelBody, ToggleControl, TextControl } from "@wordpress/components";
 import "./editor.scss";
 
-export default function edit(props) {
-    const { attributes, setAttributes } = props;
-
+/**
+ * Edit component for the custom Gutenberg block.
+ *
+ * This component allows users to edit the block's attributes, including
+ * the main content, whether to show shadow text, and custom shadow text options.
+ *
+ */
+export default function Edit({ attributes, setAttributes }) {
+    // Determine the shadow text based on block attributes
     const shadowText = attributes.overrideShadowText
         ? attributes.customShadowText
         : attributes.content;
 
+    // Inspector controls for block settings
     const inspectorControls = (
         <InspectorControls>
-            <PanelBody title={__("Settings", "")}>
+            <PanelBody title={__("Settings", "text-domain")}>
                 <ToggleControl
                     checked={!!attributes.showShadowText}
-                    label={__("Show shadow text")}
+                    label={__("Show shadow text", "text-domain")}
                     onChange={() =>
                         setAttributes({
                             showShadowText: !attributes.showShadowText,
@@ -29,7 +36,7 @@ export default function edit(props) {
                 {attributes.showShadowText && (
                     <ToggleControl
                         checked={!!attributes.overrideShadowText}
-                        label={__("Override shadow text")}
+                        label={__("Override shadow text", "text-domain")}
                         onChange={() =>
                             setAttributes({
                                 overrideShadowText:
@@ -40,10 +47,10 @@ export default function edit(props) {
                 )}
                 {attributes.showShadowText && attributes.overrideShadowText && (
                     <TextControl
-                        label={__("Custom shadow text")}
+                        label={__("Custom shadow text", "text-domain")}
                         value={attributes.customShadowText || ""}
-                        onChange={(value) =>
-                            setAttributes({ customShadowText: value })
+                        onChange={(customShadowText) =>
+                            setAttributes({ customShadowText })
                         }
                     />
                 )}
@@ -51,6 +58,7 @@ export default function edit(props) {
         </InspectorControls>
     );
 
+    // Render the edit UI
     return (
         <>
             {inspectorControls}
@@ -60,9 +68,7 @@ export default function edit(props) {
                         tagName="h2"
                         value={attributes.content}
                         allowedFormats={[]}
-                        onChange={(newContent) =>
-                            setAttributes({ content: newContent })
-                        }
+                        onChange={(content) => setAttributes({ content })}
                         placeholder={__("Enter header...", "text-domain")}
                     />
                     {attributes.showShadowText && (
