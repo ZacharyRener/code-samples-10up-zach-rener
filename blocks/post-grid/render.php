@@ -20,10 +20,12 @@ if ($postsQuery->have_posts()) : ?>
         <div class="posts">
             <?php while ($postsQuery->have_posts()) : $postsQuery->the_post(); ?>
                 <div class="post">
+					<a href="<?php the_permalink(); ?>">
                     <?php the_post_thumbnail(); ?>
                     <div class="date"><?php echo get_the_date(); ?></div>
                     <h4><?php the_title(); ?></h4>
                     <div class="excerpt"><?php the_excerpt(); ?></div>
+					</a>
                 </div>
             <?php endwhile; ?>
         </div>

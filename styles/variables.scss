@@ -73,3 +73,14 @@ $bg_offwhite: #f4f0ef;
     letter-spacing: -3px;
     text-transform: lowercase;
 }
+
+// Container Style
+@mixin container {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 0 20px;
+    width: 100%;
+    @media (max-width: 767px) {
+        padding: 0;
+    }
+}
