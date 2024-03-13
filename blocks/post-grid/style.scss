@@ -1,0 +1,82 @@
+@use "../../styles/variables.scss" as *;
+
+.wp-block-code-samples-10up-zach-rener-post-grid {
+    padding: 80px 0;
+    position: relative;
+    width: 100%;
+    max-width: none !important;
+    h3 {
+        color: var(--Text-D1, #3a322b);
+        font-feature-settings:
+            "clig" off,
+            "liga" off;
+
+        /* h3/default */
+        font-family: $font_epilogue;
+        font-size: 36px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 120%; /* 43.2px */
+        text-align: center;
+        border-bottom: 1px solid #cac2bc;
+        padding-bottom: 16px;
+    }
+    .posts {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        grid-gap: 40px;
+        .post {
+            img {
+                width: 100%;
+                height: auto;
+                max-height: 212px;
+                object-fit: cover;
+                object-position: top;
+            }
+            .date {
+                margin-top: 10px;
+                color: #5e544b;
+                font-feature-settings:
+                    "clig" off,
+                    "liga" off;
+                font-family: $font_red_hat;
+                font-size: 12px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 120%; /* 14.4px */
+                letter-spacing: 1.4px;
+                text-transform: uppercase;
+            }
+            h4 {
+                margin-top: 15px;
+                margin-bottom: 0;
+                color: var(--Text-D1, #3a322b);
+                font-feature-settings:
+                    "clig" off,
+                    "liga" off;
+                font-family: $font_epilogue;
+                font-size: 24px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 120%; /* 28.8px */
+            }
+            .excerpt {
+                p {
+                    margin-bottom: 0;
+                    margin-top: 16px;
+                    color: var(--Text-D2, #5e544b);
+                    font-feature-settings:
+                        "clig" off,
+                        "liga" off;
+
+                    /* 11 paragraph small/default */
+                    font-family: $font_red_hat;
+                    font-size: 13px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 120%; /* 15.6px */
+                }
+            }
+        }
+    }
+}
