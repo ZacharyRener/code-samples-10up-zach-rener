@@ -8,5 +8,5 @@ Dynamically rendered Gutenberg block
 
 ## Relevant Files
 
-1. [Edit.jsx](http://https://github.com/ZacharyRener/code-samples-10up-zach-rener/blob/main/blocks/post-grid/edit.jsx "Edit.jsx")
+1. [Edit.jsx](https://github.com/ZacharyRener/code-samples-10up-zach-rener/blob/main/blocks/post-grid/edit.jsx "Edit.jsx")
 2. [Render.php](https://github.com/ZacharyRener/code-samples-10up-zach-rener/blob/main/blocks/post-grid/render.php "Render.php")
